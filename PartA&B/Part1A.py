@@ -17,7 +17,7 @@ GRID = {
 #Assign random values in Certain boxes.
 def assignGridVals(GRID):
     for x in GRID :
-        print(x)
+        print("Grid: ",x," Value: ",GRID[x])
 
 
 assignGridVals(GRID)
