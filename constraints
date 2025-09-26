@@ -4,6 +4,7 @@ Definition:
 Variables:
 
 Domains:
+>Domain(possible values) of the variables are whatever values are left in the row, column and 9x9 grid that the current square is in
 
 Constraints:
 
