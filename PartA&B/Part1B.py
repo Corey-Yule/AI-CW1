@@ -1,10 +1,11 @@
 #Coursework 1 - Corey Yule, Euan Grierson 
 #Part 1A
 import math
+import numpy as np
 class SudokuCSP:
     def __init__(self, grid, domains):
         #Defines a grid of 81 squares (NOTE: this is currently fully empty as 0 defines as an empty square)
-        self.grid = grid
+        self.grid = grid.flatten()
         self.domains = {}
         #Loop over each square in the grid this sorts the domain of hidden numbers
         for i in range(81):
@@ -12,6 +13,19 @@ class SudokuCSP:
                 self.domains[i] = set(range(1,10)) #1-9
             else:
                 self.domains[i] =  {self.grid[i]}
+
+    def get_puzzle(file):
+        with open(file) as f:
+            text = f.read()
+        # replace commas with spaces
+        text = text.replace(",", " ")
+
+        # now load into numpy
+        from io import StringIO
+        grid = np.loadtxt(StringIO(text), dtype=int)
+
+        return grid
+
 
     #Checks constraints -> 3x3 no dups, rows no dupes, no dupes
     def rule_check(self, cell, val, assignment):
@@ -25,10 +39,13 @@ class SudokuCSP:
         #Idk the rest of the maths behind this basically in theory loop round everything and check if the index of whatever you are on conflicts with neighbors?
         for x in box_row:
             #Im here
+            print()
 
 
 
-#Visual thing for my brain to work.
-grid= [0,1,0,1,0,1,0,1,0]
-for i in range(9):
-        print(grid)
+# #Visual thing for my brain to work.
+# grid= [0,1,0,1,0,1,0,1,0]
+# for i in range(9):
+#         print(grid)
+    grid = get_puzzle("test.txt")
+    print(grid)
