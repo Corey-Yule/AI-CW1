@@ -6,7 +6,7 @@ class SudokuCSP:
         #Defines a grid of 81 squares (NOTE: this is currently fully empty as 0 defines as an empty square)
         self.grid = grid
         self.domains = {}
-        #Loop over each square in the grid
+        #Loop over each square in the grid this sorts the domain of hidden numbers
         for i in range(81):
             if self.grid[i] == 0:
                 self.domains[i] = set(range(1,10)) #1-9
@@ -22,9 +22,9 @@ class SudokuCSP:
         #find the box 3x3
         box_row = math.floor(row /3) *3
         box_col = math.floor(col /3) *3
-
         #Idk the rest of the maths behind this basically in theory loop round everything and check if the index of whatever you are on conflicts with neighbors?
-
+        for x in box_row:
+            #Im here
 
 
 
