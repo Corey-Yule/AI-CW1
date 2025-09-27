@@ -1,6 +1,7 @@
 #Coursework 1 - Corey Yule, Euan Grierson 
 #Part 1A
 import math
+import csv
 import numpy as np
 class SudokuCSP:
     def __init__(self, grid, domains):
@@ -16,19 +17,17 @@ class SudokuCSP:
                     self.domains[(r,c)] =  {self.grid[r][c]}
 
     def get_puzzle(file):
-        with open(file) as f:
-            text = f.read()
-    
-        # replace commas with spaces so it works with numpy
-        text = text.replace(",", " ")
-        
-
-        # now it loads into numpy to read it into an array
-        from io import StringIO
-        grid = np.loadtxt(StringIO(text), dtype=int)
-
+        #open file in read mode
+        datafile = open(file, 'r')
+        #read the file with a comma delimiter
+        reader=csv.reader(datafile, delimiter=',')
+        #define the grid as an empty array
+        grid=[]
+        #for each row in the file, append to the grid
+        for row in reader:
+            grid.append(row)
         return grid
-
+        
 
     #Checks constraints -> 3x3 no dups, rows no dupes, no dupes
     def rule_check(self, row, col, val, grid):
@@ -51,5 +50,6 @@ class SudokuCSP:
 # grid= [0,1,0,1,0,1,0,1,0]
 # for i in range(9):
 #         print(grid)
-    grid = get_puzzle("test.txt")
-    print(grid)
+    grid = get_puzzle("test.csv")
+    for row in grid:
+        print(row)
