@@ -8,19 +8,22 @@ class SudokuCSP:
         self.grid = grid.flatten()
         self.domains = {}
         #Loop over each square in the grid this sorts the domain of hidden numbers
-        for i in range(81):
-            if self.grid[i] == 0:
-                self.domains[i] = set(range(1,10)) #1-9
-            else:
-                self.domains[i] =  {self.grid[i]}
+        for r in range(9):
+            for c in range(9):
+                if self.grid[r][c] == 0:
+                    self.domains[(r,c)] = set(range(1,10)) #1-9
+                else:
+                    self.domains[(r,c)] =  {self.grid[r][c]}
 
     def get_puzzle(file):
         with open(file) as f:
             text = f.read()
-        # replace commas with spaces
+    
+        # replace commas with spaces so it works with numpy
         text = text.replace(",", " ")
+        
 
-        # now load into numpy
+        # now it loads into numpy to read it into an array
         from io import StringIO
         grid = np.loadtxt(StringIO(text), dtype=int)
 
@@ -28,19 +31,20 @@ class SudokuCSP:
 
 
     #Checks constraints -> 3x3 no dups, rows no dupes, no dupes
-    def rule_check(self, cell, val, assignment):
-        #find the row:
-        row = math.floor(cell / 9)
-        #find column
-        col = cell % 9
-        #find the box 3x3
-        box_row = math.floor(row /3) *3
-        box_col = math.floor(col /3) *3
-        #Idk the rest of the maths behind this basically in theory loop round everything and check if the index of whatever you are on conflicts with neighbors?
-        for x in box_row:
-            #Im here
-            print()
+    def rule_check(self, row, col, val, grid):
+        #Check Row
+        for r in range(9):
+            if r!= row and grid[r][col] == val:
+                return False
+        #Check Column
+        for c in range(9):
+            if c!= col and grid[row][c] == val:
+                return False
+        #Check 3x3
+        box_row = (row // 3)*3
+        box_col = (col // 3)*3
 
+        return True
 
 
 # #Visual thing for my brain to work.
