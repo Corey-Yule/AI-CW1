@@ -43,13 +43,14 @@ class SudokuCSP:
         box_row = (row // 3)*3
         box_col = (col // 3)*3
 
+        for r in(box_row, box_row + 3):
+            for c in(box_col, box_col + 3):
+                if(r != row or c != col) and grid[r][c] == val:
+                    return False
+                
         return True
 
 
 # #Visual thing for my brain to work.
-# grid= [0,1,0,1,0,1,0,1,0]
-# for i in range(9):
-#         print(grid)
-    grid = get_puzzle("test.csv")
-    for row in grid:
-        print(row)
+grid = SudokuCSP.get_puzzle("test.csv")
+print(SudokuCSP.rule_check(0, 1, 5, grid))
