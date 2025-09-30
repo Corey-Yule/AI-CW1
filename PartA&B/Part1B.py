@@ -79,7 +79,7 @@ class SudokuGui:
                 row_cell.append(label)
             self.boxes.append(row_cell)
 
-        solve_button = tk.Button(root,text="Solve Puzzle",command=self.solve_puzzle(), bg="#4CAF50",fg="white",
+        solve_button = tk.Button(root,text="Solve Puzzle",command=self.solve_puzzle, bg="#4CAF50",fg="white",
                                  font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
                                  borderwidth=4,activebackground="#45a049",  activeforeground="yellow")#Styling button because why not.
         solve_button.grid(row=10, column=0, columnspan=9, pady=10)#Centered
