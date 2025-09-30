@@ -1,9 +1,11 @@
 #Coursework 1 - Corey Yule, Euan Grierson 
 #Part 1A
-import math
+
+#Imports
 import csv
 import numpy as np
-import io
+import tkinter as tk
+#SudokuClass
 class SudokuCSP:
     def __init__(self, grid, domains):
         #Defines a grid of 81 squares (NOTE: this is currently fully empty as 0 defines as an empty square)
@@ -53,10 +55,49 @@ class SudokuCSP:
                 
         return True
 
+class SudokuGui:
+    def __init__(self,main,grid):
+        self.main = main
+        self.main.title("Sudoku Puzzle Solver")
+        self.main.geometry("570x550") #Size
 
-# #Visual thing for my brain to work.
+        #Creating the sudoku board
+        self.grid = grid
+        self.boxes = []
+
+        #loop round to create the grid
+        for r in range(9):
+            row_cell = []
+            for c in range(9):
+                value = self.grid[r][c]
+
+                #if the value is 0 show as blank
+                text = str(value) if value != 0 else " "
+                #Label Setup
+                label = tk.Label(main, text=text, width=4, height=2, font=("Ariel", 18), relief="solid", borderwidth=1)
+                label.grid(row=r, column=c, padx=1, pady=1)
+                #row cells
+                row_cell.append(label)
+            self.boxes.append(row_cell)
+
+    def update_grid(self, newGrid):
+        #Updates the grid with new grid values
+        for r in range(9):
+            for c in range(9):
+                value = newGrid[r][c]
+                self.boxes[r][c].config(text=str(value) if value !=0 else " ")
+
+
+
+#main
 grid = SudokuCSP.get_puzzle("test.csv")
-sudoku = SudokuCSP(grid, {})   # create the board
+sudoku = SudokuCSP(grid, {})   
+# create the board
+root = tk.Tk()
+gui = SudokuGui(root, grid)
+root.mainloop()
+
+#test cases
 print(sudoku.rule_check(0, 2,1, grid)) #should return True
 print(sudoku.rule_check(0, 2,5, grid)) #should return False
 
