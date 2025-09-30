@@ -24,7 +24,6 @@ class SudokuCSP:
         with open(file, 'r') as datafile:
         #read the file with a comma delimiter
             reader = csv.reader(datafile, delimiter=',', skipinitialspace=True)
-
             #define the grid as an empty array
             grid=[]
             #for each row in the file, append to the grid
@@ -59,7 +58,7 @@ class SudokuGui:
     def __init__(self,main,grid):
         self.main = main
         self.main.title("Sudoku Puzzle Solver")
-        self.main.geometry("570x550") #Size
+        self.main.geometry("560x625") #Size
 
         #Creating the sudoku board
         self.grid = grid
@@ -80,6 +79,11 @@ class SudokuGui:
                 row_cell.append(label)
             self.boxes.append(row_cell)
 
+        solve_button = tk.Button(root,text="Solve Puzzle",command=self.solve_puzzle(), bg="#4CAF50",fg="white",
+                                 font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
+                                 borderwidth=4,activebackground="#45a049",  activeforeground="yellow")#Styling button because why not.
+        solve_button.grid(row=10, column=0, columnspan=9, pady=10)#Centered
+
     def update_grid(self, newGrid):
         #Updates the grid with new grid values
         for r in range(9):
@@ -87,7 +91,9 @@ class SudokuGui:
                 value = newGrid[r][c]
                 self.boxes[r][c].config(text=str(value) if value !=0 else " ")
 
-
+    def solve_puzzle(self):
+        print("Solve button clicked!")
+        # backtracking function here with the use of the rule check.
 
 #main
 grid = SudokuCSP.get_puzzle("test.csv")
@@ -98,6 +104,7 @@ gui = SudokuGui(root, grid)
 root.mainloop()
 
 #test cases
+'''
 print(sudoku.rule_check(0, 2,1, grid)) #should return True
 print(sudoku.rule_check(0, 2,5, grid)) #should return False
-
+'''
