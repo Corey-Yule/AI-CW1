@@ -63,10 +63,9 @@ class SudokuGui:
         self.main = main
         self.main.title("Sudoku Puzzle Solver")
         self.main.geometry("600x750") #Size
-        main.configure(bg='lightblue')
-
+        main.configure(bg='blue')
         # Frame that will hold the Sudoku board
-        board_frame = tk.Frame(self.main, bg="lightblue")
+        board_frame = tk.Frame(self.main, bg="blue")
         board_frame.pack(expand=True)  # center the frame in the window
 
         #Creating the sudoku board
@@ -78,15 +77,38 @@ class SudokuGui:
             row_cell = []
             for c in range(9):
                 value = self.grid[r][c]
-
-                #if the value is 0 show as blank
                 text = str(value) if value != 0 else " "
-                #Label Setup
-                label_boxes = tk.Label(board_frame, text=text, width=4, height=2, font=("Ariel", 18), relief="solid", borderwidth=1)
-                label_boxes.grid(row=r, column=c, padx=1, pady=1)
-                #row cells
+
+                # Default borders
+                top = 1
+                left = 1
+                right = 1
+                bottom = 1
+
+                # Make thick borders every 3 cells
+                if r % 3 == 0:
+                    top = 3
+                if c % 3 == 0:
+                    left = 3
+                if r == 8:  # bottom edge of board
+                    bottom = 3
+                if c == 8:  # right edge of board
+                    right = 3
+
+                label_boxes = tk.Label(
+                    board_frame,text=text,width=4,height=2,
+                    font=("Ariel", 18),relief="solid",
+                    bd=0  # disable default border so we can use highlight thickness
+                )
+                label_boxes.grid(
+                    row=r,column=c,
+                    padx=(left, right),
+                    pady=(top, bottom)
+                )
+
                 row_cell.append(label_boxes)
             self.boxes.append(row_cell)
+
 
         solve_button = tk.Button(board_frame,text="Solve Puzzle",command=self.solve_puzzle_button, bg="#4CAF50",fg="white",
                                  font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
