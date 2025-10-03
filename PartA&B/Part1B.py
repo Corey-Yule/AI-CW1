@@ -7,6 +7,7 @@
 import csv
 import numpy as np
 import tkinter as tk
+import time
 #SudokuClass
 class SudokuCSP:
     def __init__(self, grid, domains):
@@ -20,7 +21,7 @@ class SudokuCSP:
                     self.domains[(r,c)] = set(range(1,10)) #1-9
                 else:
                     self.domains[(r,c)] =  {self.grid[r][c]}
-
+    @staticmethod #So it can be called from the GUI
     def get_puzzle(file):
         #open file in read mode
         with open(file, 'r') as datafile:
@@ -35,7 +36,8 @@ class SudokuCSP:
         return grid
         
     #Checks constraints -> 3x3 no dups, rows no dupes, no dupes
-    def rule_check(self, row, col, val, grid):
+    @staticmethod #So it can be called from the GUI
+    def rule_check(row, col, val, grid):
         # Check Row
         for c in range(9):
             if c != col and grid[row][c] == val:
@@ -63,6 +65,10 @@ class SudokuGui:
         self.main.geometry("600x750") #Size
         main.configure(bg='lightblue')
 
+        # Frame that will hold the Sudoku board
+        board_frame = tk.Frame(self.main, bg="lightblue")
+        board_frame.pack(expand=True)  # center the frame in the window
+
         #Creating the sudoku board
         self.grid = grid
         self.boxes = []
@@ -76,13 +82,13 @@ class SudokuGui:
                 #if the value is 0 show as blank
                 text = str(value) if value != 0 else " "
                 #Label Setup
-                label_boxes = tk.Label(main, text=text, width=4, height=2, font=("Ariel", 18), relief="solid", borderwidth=1)
+                label_boxes = tk.Label(board_frame, text=text, width=4, height=2, font=("Ariel", 18), relief="solid", borderwidth=1)
                 label_boxes.grid(row=r, column=c, padx=1, pady=1)
                 #row cells
                 row_cell.append(label_boxes)
             self.boxes.append(row_cell)
 
-        solve_button = tk.Button(root,text="Solve Puzzle",command=self.solve_puzzle, bg="#4CAF50",fg="white",
+        solve_button = tk.Button(board_frame,text="Solve Puzzle",command=self.solve_puzzle_button, bg="#4CAF50",fg="white",
                                  font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
                                  borderwidth=4,activebackground="#45a049",  activeforeground="yellow")#Styling button because why not.
         solve_button.grid(row=10, column=0, columnspan=9, pady=10)#Centered
@@ -94,9 +100,47 @@ class SudokuGui:
                 value = newGrid[r][c]
                 self.boxes[r][c].config(text=str(value) if value !=0 else " ")
 
-    def solve_puzzle(self):
-        print("Solve button clicked!")
-        # backtracking function here with the use of the rule check.
+    def solve_puzzle(self, grid, row=0, col=0):
+        ''' 
+        # GUI update + delay here (so you see each step)
+        self.update_grid(grid)
+        self.main.update_idletasks()
+        self.main.after(1)  # 1 ms delay between steps this is just to see the process.
+        '''
+       
+        # If we've reached the end
+        if row == 9:
+            return True
+
+        # If last column, move to next row
+        if col == 9:
+            return self.solve_puzzle(grid, row + 1, 0)
+
+        # Skip filled cells
+        if grid[row][col] != 0:
+            return self.solve_puzzle(grid, row, col + 1)
+
+        # Try numbers 1–9
+        for num in range(1, 10):
+            if SudokuCSP.rule_check(row, col, num, grid):
+                grid[row][col] = num
+
+                if self.solve_puzzle(grid, row, col + 1):
+                    return True
+
+                # Backtrack
+                grid[row][col] = 0
+
+        return False
+
+
+        
+    def solve_puzzle_button(self):
+        if self.solve_puzzle(self.grid, 0, 0):
+            self.update_grid(self.grid)
+        else:
+            print("No solution exists") # this should technically never happen...
+
 
 
 #main
