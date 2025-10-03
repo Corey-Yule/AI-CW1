@@ -141,8 +141,8 @@ class SudokuGui:
                 value = newGrid[r][c]
                 self.boxes[r][c].config(text=str(value) if value !=0 else " ")
 
-        self.backtrack_label.config(text=f"Backtracks: {self.counter}")  # refresh label
-        self.main.update_idletasks()  # force redraw
+            self.backtrack_label.config(text=f"Backtracks: {self.counter}")  # refresh label
+            self.main.update_idletasks()  # force redraw
 
     def solve_puzzle(self, grid, row=0, col=0):
         '''
@@ -169,7 +169,6 @@ class SudokuGui:
                 #Backtrack
                 grid[row][col] = 0
                 self.counter += 1 #increment backtracks this is for the count
-            
         return False
     
     def solve_puzzle_button(self):
@@ -181,6 +180,7 @@ class SudokuGui:
     def import_board(self):
         filename = askopenfilename()
         grid = SudokuCSP.get_puzzle(filename)
+        self.counter = 0 # reset the counter of each board
         self.grid = grid
         self.update_grid(grid)
 
