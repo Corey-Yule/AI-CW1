@@ -7,7 +7,7 @@
 import csv
 import numpy as np
 import tkinter as tk
-import time
+from tkinter.filedialog import askopenfilename
 #SudokuClass
 class SudokuCSP:
     def __init__(self, grid, domains):
@@ -64,6 +64,7 @@ class SudokuGui:
         self.main.title("Sudoku Puzzle Solver")
         self.main.geometry("600x750") #Size
         main.configure(bg='blue')
+        self.counter = 0
         # Frame that will hold the Sudoku board
         board_frame = tk.Frame(self.main, bg="blue")
         board_frame.pack(expand=True)  # center the frame in the window
@@ -109,11 +110,15 @@ class SudokuGui:
                 row_cell.append(label_boxes)
             self.boxes.append(row_cell)
 
-
+        #Buttons:
         solve_button = tk.Button(board_frame,text="Solve Puzzle",command=self.solve_puzzle_button, bg="#4CAF50",fg="white",
                                  font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
                                  borderwidth=4,activebackground="#45a049",  activeforeground="yellow")#Styling button because why not.
         solve_button.grid(row=10, column=0, columnspan=9, pady=10)#Centered
+        file_button = tk.Button(board_frame, text="Import Board",command=self.import_board, bg="#4CAF50",fg="white",
+                                 font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
+                                 borderwidth=4,activebackground="#45a049",  activeforeground="lightblue")
+        file_button.grid(row=10, column=6, columnspan=9, pady=10)#Right Aligned
 
     def update_grid(self, newGrid):
         #Updates the grid with new grid values
@@ -123,50 +128,56 @@ class SudokuGui:
                 self.boxes[r][c].config(text=str(value) if value !=0 else " ")
 
     def solve_puzzle(self, grid, row=0, col=0):
-        ''' 
+        '''
         # GUI update + delay here (so you see each step)
         self.update_grid(grid)
         self.main.update_idletasks()
-        self.main.after(1)  # 1 ms delay between steps this is just to see the process.
+        self.main.after(1)  # 5 ms delay between steps this is just to see the process.
         '''
-       
         # If we've reached the end
         if row == 9:
             return True
-
         # If last column, move to next row
         if col == 9:
             return self.solve_puzzle(grid, row + 1, 0)
-
         # Skip filled cells
         if grid[row][col] != 0:
             return self.solve_puzzle(grid, row, col + 1)
-
         # Try numbers 1–9
         for num in range(1, 10):
             if SudokuCSP.rule_check(row, col, num, grid):
                 grid[row][col] = num
-
                 if self.solve_puzzle(grid, row, col + 1):
                     return True
-
-                # Backtrack
+                #Backtrack
                 grid[row][col] = 0
-
+                self.counter += 1
         return False
-
-
-        
+    
     def solve_puzzle_button(self):
         if self.solve_puzzle(self.grid, 0, 0):
             self.update_grid(self.grid)
         else:
             print("No solution exists") # this should technically never happen...
-
-
+    #This is for the import button resets the board to what is imported
+    def import_board(self):
+        filename = askopenfilename()
+        grid = SudokuCSP.get_puzzle(filename)
+        self.grid = grid
+        self.update_grid(grid)
 
 #main
-grid = SudokuCSP.get_puzzle("test.csv")
+#grid setup
+grid = [[0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0]]
+
 sudoku = SudokuCSP(grid, {})   
 # create the board
 root = tk.Tk()
