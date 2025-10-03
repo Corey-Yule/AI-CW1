@@ -62,7 +62,7 @@ class SudokuGui:
     def __init__(self,main,grid):
         self.main = main
         self.main.title("Sudoku Puzzle Solver")
-        self.main.geometry("600x750") #Size
+        self.main.geometry("600x760") #Size
         main.configure(bg='blue')
         self.counter = 0
         # Frame that will hold the Sudoku board
@@ -110,15 +110,29 @@ class SudokuGui:
                 row_cell.append(label_boxes)
             self.boxes.append(row_cell)
 
+        #Label:
+        # Label on the left
+            self.backtrack_label = tk.Label(
+            main,text=f"Backtracks: {self.counter}",bg=main["bg"] ,fg="white",
+            font=("Arial", 14, "bold"), width=15, height=2, relief="raised",borderwidth=0
+        )
+        self.backtrack_label.pack(side="left", padx=10)
+
         #Buttons:
-        solve_button = tk.Button(board_frame,text="Solve Puzzle",command=self.solve_puzzle_button, bg="#4CAF50",fg="white",
-                                 font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
-                                 borderwidth=4,activebackground="#45a049",  activeforeground="yellow")#Styling button because why not.
-        solve_button.grid(row=10, column=0, columnspan=9, pady=10)#Centered
-        file_button = tk.Button(board_frame, text="Import Board",command=self.import_board, bg="#4CAF50",fg="white",
-                                 font=("Arial", 14, "bold"),width=15,height=2,relief="raised",
-                                 borderwidth=4,activebackground="#45a049",  activeforeground="lightblue")
-        file_button.grid(row=10, column=6, columnspan=9, pady=10)#Right Aligned
+        # Solve button in the middle
+        solve_button = tk.Button(main, text="Solve Puzzle", command=self.solve_puzzle_button,
+                                bg="#4CAF50", fg="white", font=("Arial", 14, "bold"),
+                                width=15, height=2, relief="raised",
+                                borderwidth=4, activebackground="#45a049", activeforeground="yellow")
+        solve_button.pack(side="left", expand=True, padx=10, pady=(0,20))
+
+        # File button on the right
+        file_button = tk.Button(main, text="Import Board", command=self.import_board,
+                                bg="#4CAF50", fg="white", font=("Arial", 14, "bold"),
+                                width=15, height=2, relief="raised",
+                                borderwidth=4, activebackground="#45a049", activeforeground="lightblue")
+        file_button.pack(side="right", padx=10, pady=(0,20))
+
 
     def update_grid(self, newGrid):
         #Updates the grid with new grid values
@@ -126,6 +140,9 @@ class SudokuGui:
             for c in range(9):
                 value = newGrid[r][c]
                 self.boxes[r][c].config(text=str(value) if value !=0 else " ")
+
+        self.backtrack_label.config(text=f"Backtracks: {self.counter}")  # refresh label
+        self.main.update_idletasks()  # force redraw
 
     def solve_puzzle(self, grid, row=0, col=0):
         '''
@@ -151,7 +168,8 @@ class SudokuGui:
                     return True
                 #Backtrack
                 grid[row][col] = 0
-                self.counter += 1
+                self.counter += 1 #increment backtracks this is for the count
+            
         return False
     
     def solve_puzzle_button(self):
