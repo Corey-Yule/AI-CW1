@@ -13,7 +13,9 @@
 
     ; )
     (:types
-
+        landers
+        rover
+        surface
     )
 
     ; -------------------------------
@@ -28,7 +30,13 @@
     ; )
 
     (:predicates
-
+        rover_pos ?x
+        surface_loc ?x
+        data ?x
+        physical_sample
+        landers ?x
+        mission ?x
+        objectives ?x ?y ?z
     )
 
     ; -------------------------------

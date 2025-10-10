@@ -145,12 +145,12 @@ class SudokuGui:
             self.main.update_idletasks()  # force redraw
 
     def solve_puzzle(self, grid, row=0, col=0):
-        '''
+        #'''
         # GUI update + delay here (so you see each step)
         self.update_grid(grid)
         self.main.update_idletasks()
         self.main.after(1)  # 5 ms delay between steps this is just to see the process.
-        '''
+        #'''
         # If we've reached the end
         if row == 9:
             return True
