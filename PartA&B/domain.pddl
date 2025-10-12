@@ -7,7 +7,7 @@
 
     (:types
         lander rover waypoint
-
+    )
     ; -------------------------------
     ; Predicates
     ; -------------------------------
@@ -15,9 +15,9 @@
     (:predicates
         (rover_pos ?x ?y)
         (surface_loc_links ?x ?y)
-        (image_stored ?wp ?r )
-        (scan_stored ?wp ?r )
-        (physical_sample ?r) 
+        (image_stored ?wp ?r)
+        (scan_stored ?wp ?r)
+        (physical_sample ?r)
         (sample_location ?wp)
         (sample_collected ?l)
         (lander_rover ?x ?y)
@@ -61,27 +61,23 @@
         :effect (and (scan_stored ?wp ?r))
     )
 
-   (:action take_sample
+    (:action take_sample
         :parameters (?r - rover ?wp - waypoint)
-        :precondition (and (rover_pos ?r ?wp)(not(physical_sample ?r))(sample_location ?wp))
-        :effect (and (physical_sample ?r) (not(sample_location ?wp)))
-
-     (:action store_sample
-        :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp)(physical_sample ?r)(not(sample_collected ?l))(lander_rover ?l ?r)(lander_pos ?l ?wp))
-        :effect (and (sample_collected ?l) (not(physical_sample ?r)))
+        :precondition (and (rover_pos ?r ?wp)
+            (not(physical_sample ?r))(sample_location ?wp))
+        :effect (and (physical_sample ?r) (not(sample_location ?wp))) (:action store_sample
+            :parameters (?r - rover ?wp - waypoint ?l - lander)
+            :precondition (and (rover_pos ?r ?wp)(physical_sample ?r)
+                (not(sample_collected ?l))(lander_rover ?l ?r)(lander_pos ?l ?wp))
+            :effect (and (sample_collected ?l) (not(physical_sample ?r)))
+        ) (:action transmit_image
+            :parameters (?r - rover ?wp - waypoint ?l - lander)
+            :precondition (and (rover_pos ?r ?wp)(image_stored ?wp ?r))
+            :effect (and (data_collected ?l) (not(imaged_stored ?wp ?r)))
+        ) (:action transmit_scan
+            :parameters (?r - rover ?wp - waypoint ?l - lander)
+            :precondition (and (rover_pos ?r ?wp)(scan_stored ?wp ?r))
+            :effect (and (data_collected ?l) (not(scan_stored ?wp ?r)))
+        )
     )
-
-    (:action transmit_image
-        :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp)(image_stored ?wp ?r))
-        :effect (and (data_collected ?l) (not(imaged_stored ?wp ?r)))
-    )
-
-      (:action transmit_scan
-        :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp)(scan_stored ?wp ?r))
-        :effect (and (data_collected ?l) (not(scan_stored ?wp ?r)))
-    )
-    
 )
