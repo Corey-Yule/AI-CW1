@@ -13,9 +13,7 @@
 
     ; )
     (:types
-        landers
-        rover
-        surface
+        lander rover waypoint
     )
 
     ; -------------------------------
@@ -30,13 +28,13 @@
     ; )
 
     (:predicates
-        rover_pos ?x
-        surface_loc ?x
-        data ?x
-        physical_sample
-        landers ?x
-        mission ?x
-        objectives ?x ?y ?z
+        (rover_pos ?x ?y)
+        (surface_loc_links ?x ?y)
+        (data ?x)
+        (physical_sample)
+        (lander_rover ?x ?y)
+        (mission ?x)
+        (objectives ?x ?y ?z)
     )
 
     ; -------------------------------
@@ -57,10 +55,11 @@
     ;     )
     ; )
 
-    (:action action_name
-        :parameters ()
-        :precondition (and)
-        :effect (and)
+    (:action move_rover
+        :parameters (?r ?wp ?x)
+        :precondition (and (rover_pos ?r ?x) (surface_loc_links ?x ?wp))
+        :effect (and (rover_pos ?r ?wp)
+            (not (rover_pos ?r ?x))
+        )
     )
-
 )
