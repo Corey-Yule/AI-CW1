@@ -13,17 +13,19 @@
 
     (:init
         (surface_loc_links wp1 wp2)
-        (surface_loc_links wp2 wp3)
         (surface_loc_links wp1 wp4)
-        (surface_loc_links wp4 wp3)
+        (surface_loc_links wp2 wp3)
         (surface_loc_links wp3 wp5)
+        (surface_loc_links wp4 wp3)
         (surface_loc_links wp5 wp1)
-        (rover_pos r1 wp1)
+        (lander_rover l1 r1)
     )
 
     (:goal
         (and
+            ;tests
             (rover_pos r1 wp2)
+
         )
     )
 )
