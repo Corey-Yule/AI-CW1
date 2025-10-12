@@ -7,7 +7,6 @@
 
     (:types
         lander rover waypoint
-    )
 
     ; -------------------------------
     ; Predicates
@@ -16,7 +15,8 @@
     (:predicates
         (rover_pos ?x ?y)
         (surface_loc_links ?x ?y)
-        (data ?x)
+        (image_stored ?wp ?r )
+        (scan_stored ?wp ?r )
         (physical_sample)
         (lander_rover ?x ?y)
         (lander_pos ?x ?y)
@@ -46,6 +46,18 @@
         :effect (and (rover_pos ?r ?wp)
             (not (rover_pos ?r ?x))
         )
+    )
+
+    (:action take_picture
+        :parameters (?r - rover ?wp - waypoint ?x - waypoint)
+        :precondition (and (rover_pos ?r ?wp) (not(image_stored ?wp ?r)) (not(scan_stored ?wp ?r)) (not(image_stored ?x ?r)) (not(scan_stored ?x ?r)))
+        :effect (and (image_stored ?wp ?r))
+    )
+
+    (:action use_radar
+        :parameters (?r - rover ?wp - waypoint ?x - waypoint)
+        :precondition (and (rover_pos ?r ?wp) (not(image_stored ?wp ?r)) (not(scan_stored ?wp ?r)) (not(image_stored ?x ?r)) (not(scan_stored ?x ?r)))
+        :effect (and (scan_stored ?wp ?r))
     )
 
 )
