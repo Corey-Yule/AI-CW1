@@ -19,13 +19,18 @@
         (surface_loc_links wp4 wp3)
         (surface_loc_links wp5 wp1)
         (lander_rover l1 r1)
+        (image_at wp5)
+        (scan_at wp3)
+        (sample_location wp1)
     )
 
     (:goal
         (and
+            (image_collected l1)
+            (scan_collected l1)
+            (sample_collected l1)
             ;tests
-            (rover_pos r1 wp2)
-
+            ;(rover_pos r1 wp2)
         )
     )
 )
