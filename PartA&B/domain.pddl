@@ -13,7 +13,7 @@
     ; -------------------------------
 
     (:predicates
-        (rover_pos ?x ?y)
+        (rover_pos ?r ?wp)
         (surface_loc_links ?x ?y)
         (image_stored ?wp ?r)
         (scan_stored ?wp ?r)
