@@ -6,7 +6,8 @@
     ; -------------------------------
 
     (:types
-        lander rover human waypoint room - objects
+        lander rover human waypoint
+        room
         c_room docking_bay - room
     )
     ; -------------------------------
@@ -28,8 +29,9 @@
         (scan_at ?wp)
         (image_at ?wp)
         (human_lander ?h ?l)
-        (human_pos ?h ?room)
+        (human_pos ?h - human ?room)
         (room_lander ?room ?lander)
+        (room_link ?r1 - room ?r2 - room)
     )
 
     ; -------------------------------
@@ -43,8 +45,8 @@
     )
 
     (:action deploy_rover
-        :parameters (?r - rover ?l -lander ?wp - waypoint ?h - human ?room - room)
-        :precondition(and (lander_pos ?l ?wp) (not(rover_pos ?r ?wp)) (lander_rover ?l ?r)(human_pos ?h ?room))
+        :parameters (?r - rover ?l -lander ?wp - waypoint ?h - human ?droom - docking_bay)
+        :precondition(and (lander_pos ?l ?wp) (not(rover_pos ?r ?wp)) (lander_rover ?l ?r)(human_pos ?h ?droom))
         :effect (and (rover_pos ?r ?wp))
     )
 
@@ -69,28 +71,30 @@
     )
 
     (:action take_sample
-        :parameters (?r - rover ?wp - waypoint ?h - human ?room - room)
+        :parameters (?r - rover ?wp - waypoint ?h - human ?droom - docking_bay)
         :precondition (and (rover_pos ?r ?wp)
-            (not(physical_sample ?r))(sample_location ?wp)(human_pos ?h ?room))
+            (not(physical_sample ?r))(sample_location ?wp)(human_pos ?h ?droom))
         :effect (and (physical_sample ?r) (not(sample_location ?wp)))
     )
 
     (:action store_sample
-        :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp)(physical_sample ?r)
-            (not(sample_collected ?l))(lander_rover ?l ?r)(lander_pos ?l ?wp))
+        :parameters (?r - rover ?wp - waypoint ?l - lander ?droom - docking_bay ?h - human)
+        :precondition (and (rover_pos ?r ?wp)(physical_sample ?r)(human_pos ?h ?droom)
+            (not(sample_collected ?l))(lander_rover ?l ?r)(lander_pos ?l ?wp)(human_pos ?h ?droom))
         :effect (and (sample_collected ?l) (not(physical_sample ?r)))
     )
 
     (:action transmit_image
-        :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp)(image_stored ?wp ?r)(lander_pos ?l ?wp))
+        :parameters (?r - rover ?wp - waypoint ?l - lander ?croom - c_room ?h - human)
+        :precondition (and (rover_pos ?r ?wp)(image_stored ?wp ?r)(lander_pos ?l ?wp)
+        (human_pos ?h ?croom))
         :effect (and (image_collected ?l) (not(image_stored ?wp ?r)))
     )
 
     (:action transmit_scan
-        :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp)(scan_stored ?wp ?r)(lander_pos ?l ?wp))
+        :parameters (?r - rover ?wp - waypoint ?l - lander ?croom - c_room ?h - human)
+        :precondition (and (rover_pos ?r ?wp)(scan_stored ?wp ?r)(lander_pos ?l ?wp)
+        (human_pos ?h ?croom))
         :effect (and (scan_collected ?l) (not(scan_stored ?wp ?r)))
     )
 
@@ -100,13 +104,15 @@
         :effect (and (human_lander ?h ?l))
     )
     (:action docking_bay
-        :parameters (?h - human ?l - lander ?room - docking_bay)
-        :precondition (and (human_lander ?h ?l)(room_lander ?room ?l)(not(human_pos ?h ?room)))
-        :effect (and (human_pos ?h ?room))
+        :parameters (?h - human ?l - lander ?droom - docking_bay ?croom - c_room)
+        :precondition (and (human_lander ?h ?l)(room_lander ?droom ?l)(room_lander ?croom ?l)
+        (human_pos ?h ?croom)(not (human_pos ?h ?droom)))
+        :effect (and (human_pos ?h ?droom)(not(human_pos ?h ?croom)))
     )
     (:action control_room
-        :parameters (?h - human ?l - lander ?room - c_room)
-        :precondition (and (human_lander ?h ?l)(room_lander ?room ?l)(not(human_pos ?h ?room )))
-        :effect (and (human_pos ?h ?room))
+        :parameters (?h - human ?l - lander ?croom - c_room ?droom - docking_bay)
+        :precondition (and (human_lander ?h ?l)(room_lander ?droom ?l)(room_lander ?croom ?l)
+        (human_pos ?h ?droom)(not (human_pos ?h ?croom)))
+        :effect (and (human_pos ?h ?croom)(not (human_pos ?h ?droom)))
     )
-)   
+)
