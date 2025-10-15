@@ -109,4 +109,4 @@
         :precondition (and (human_lander ?h ?l)(room_lander ?room ?l)(not(human_pos ?h ?room )))
         :effect (and (human_pos ?h ?room))
     )
-)
+)   

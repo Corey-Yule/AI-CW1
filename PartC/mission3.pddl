@@ -42,7 +42,12 @@
 
     (:goal
         (and
-            
+            (image_collected l1)
+            (scan_collected l1)
+            (image_collected l2)
+            (scan_collected l2)
+            (sample_collected l1)
+            (sample_collected l2) 
         )
     )
 )
