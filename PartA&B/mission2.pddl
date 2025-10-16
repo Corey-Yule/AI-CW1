@@ -24,20 +24,35 @@
         (surface_loc_links wp6 wp4)
         (surface_loc_links wp4 wp2)
         (surface_loc_links wp2 wp4)
-        (image_at wp3)
-        (scan_at wp4)
-        (image_at wp2)
-        (scan_at wp6)
-        (sample_location wp5)
-        (sample_location wp1)
+        
         (lander_rover l1 r1)
         (lander_rover l2 r2)
         (lander_pos l1 wp2)
         (rover_pos r1 wp2)
+        (deployed_l l1)
+        (deployed_r r1)
+        
+        ;; Available waypoints for l2 deployment
+        (available wp1)
+        (available wp3)
+        (available wp4)
+        (available wp5)
+        (available wp6)
     )
 
     (:goal
         (and
+            ;; Both landers must be deployed
+            (deployed_l l1)
+            (deployed_l l2)
+            ;; task locations
+            (image_at wp3)
+            (scan_at wp4)
+            (image_at wp2)
+            (scan_at wp6)
+            (sample_location wp5)
+            (sample_location wp1)
+            ;;Collected at
             (image_collected l1)
             (scan_collected l1)
             (image_collected l2)
