@@ -34,10 +34,23 @@
         (lander_rover l2 r2)
         (lander_pos l1 wp2)
         (rover_pos r1 wp2)
+        (deployed_l l1)
+        (deployed_r r1)
+        
+        ;; Available waypoints for l2 deployment
+        (available wp1)
+        (available wp3)
+        (available wp4)
+        (available wp5)
+        (available wp6)
     )
 
     (:goal
         (and
+            ;; Both landers must be deployed
+            (deployed_l l1)
+            (deployed_l l2)
+
             (image_collected l1)
             (scan_collected l1)
             (image_collected l2)

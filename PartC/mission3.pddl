@@ -6,8 +6,10 @@
         r1 - rover
         Alice - human
         Bob - human
-        docking - docking_bay
-        control - c_room
+        docking_l1 - docking_bay
+        control_l1 - c_room
+        docking_l2 - docking_bay
+        control_l2 - c_room
         l2 - lander
         r2 - rover
         wp1 - waypoint
@@ -19,6 +21,7 @@
     )
 
     (:init
+        ;; Surface navigation
         (surface_loc_links wp1 wp2)
         (surface_loc_links wp2 wp1)
         (surface_loc_links wp2 wp3)
@@ -28,37 +31,62 @@
         (surface_loc_links wp6 wp4)
         (surface_loc_links wp4 wp2)
         (surface_loc_links wp2 wp4)
-        (room_lander docking l1)
-        (room_lander control l1)
-        (room_lander docking l2)
-        (room_lander control l2)
-        (human_lander Alice l1)
-        (human_pos Alice docking)
-        (human_lander Bob l2)
-        (human_pos Bob control)
-        (room_link docking control)
-        (room_link control docking)
 
+        ;; Lander 1 rooms
+        (room_lander docking_l1 l1)
+        (room_lander control_l1 l1)
+        (room_link docking_l1 control_l1)
+        (room_link control_l1 docking_l1)
+
+        ;; Lander 2 rooms
+        (room_lander docking_l2 l2)
+        (room_lander control_l2 l2)
+        (room_link docking_l2 control_l2)
+        (room_link control_l2 docking_l2)
+
+        ;; Human assignments and positions
+        (human_lander Alice l1)
+        (human_pos Alice docking_l1)
+        (human_lander Bob l2)
+        (human_pos Bob control_l2)
+
+        ;; Mission objectives
         (image_at wp3)
         (scan_at wp4)
         (image_at wp2)
         (scan_at wp6)
         (sample_location wp5)
         (sample_location wp1)
+
+        ;; Rover-lander associations
         (lander_rover l1 r1)
         (lander_rover l2 r2)
+
+        ;; Initial deployments (l1 and r1 already deployed)
         (lander_pos l1 wp2)
         (rover_pos r1 wp2)
+        (deployed_l l1)
+        (deployed_r r1)
+
+        ;; Available waypoints for l2 deployment
+        (available wp1)
+        (available wp3)
+        (available wp4)
+        (available wp5)
+        (available wp6)
     )
 
     (:goal
         (and
+            (deployed_l l1)
+            (deployed_l l2)
+
             (image_collected l1)
             (scan_collected l1)
             (image_collected l2)
             (scan_collected l2)
             (sample_collected l1)
-            (sample_collected l2) 
+            (sample_collected l2)
         )
     )
 )
