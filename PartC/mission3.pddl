@@ -73,7 +73,7 @@
             ;;Deployments
             (deployed_l l1)
             (deployed_l l2)
-
+            
             ;; Mission objectives
             (image_at wp3)
             (scan_at wp4)
@@ -81,7 +81,7 @@
             (scan_at wp6)
             (sample_location wp5)
             (sample_location wp1)
-
+            
             (image_collected l1)
             (scan_collected l1)
             (image_collected l2)

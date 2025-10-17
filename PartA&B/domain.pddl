@@ -57,7 +57,7 @@
         :precondition (and (rover_pos ?r ?wp))
         :effect (and (image_stored ?r)(image_at ?wp))
     )
-    
+
     (:action use_radar
         :parameters (?r - rover ?wp - waypoint)
         :precondition (and (rover_pos ?r ?wp) )
