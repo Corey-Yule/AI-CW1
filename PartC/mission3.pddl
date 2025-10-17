@@ -81,7 +81,7 @@
             (scan_at wp6)
             (sample_location wp5)
             (sample_location wp1)
-            
+            ;;Collected at
             (image_collected l1)
             (scan_collected l1)
             (image_collected l2)

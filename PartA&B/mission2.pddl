@@ -45,6 +45,7 @@
             ;; Both landers must be deployed
             (deployed_l l1)
             (deployed_l l2)
+            
             ;; task locations
             (image_at wp3)
             (scan_at wp4)
