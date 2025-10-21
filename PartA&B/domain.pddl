@@ -66,8 +66,8 @@
 
     (:action take_sample
         :parameters (?r - rover ?wp - waypoint)
-        :precondition (and (rover_pos ?r ?wp) (not (physical_sample ?r)) )
-        :effect (and (physical_sample ?r)(sample_location ?wp))
+        :precondition (and (rover_pos ?r ?wp) (not (physical_sample ?r)) (sample_location ?wp))
+        :effect (and (physical_sample ?r) (not(sample_location ?wp)))
     )
 
     (:action store_sample
@@ -78,13 +78,13 @@
 
     (:action transmit_image
         :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp) (image_stored ?r) (lander_pos ?l ?wp) (deployed_l ?l) (lander_rover ?l ?r))
+        :precondition (and (image_stored ?r) (lander_pos ?l ?wp)(deployed_l ?l) (lander_rover ?l ?r))
         :effect (and (image_collected ?l) (not (image_stored ?r)))
     )
 
     (:action transmit_scan
         :parameters (?r - rover ?wp - waypoint ?l - lander)
-        :precondition (and (rover_pos ?r ?wp) (scan_stored ?r) (lander_pos ?l ?wp) (deployed_l ?l) (lander_rover ?l ?r))
+        :precondition (and (scan_stored ?r) (lander_pos ?l ?wp) (deployed_l ?l) (lander_rover ?l ?r))
         :effect (and (scan_collected ?l) (not (scan_stored ?r)))
     )
 )

@@ -30,15 +30,14 @@
         (lander_rover l1 r1)
 
      
-       
-        
-
         ;; All waypoints available for landing
         (available wp1)
         (available wp2)
         (available wp3)
         (available wp4)
         (available wp5)
+        ;;Has to be here due to physical location
+        (sample_location wp1)
     )
 
     (:goal
@@ -48,7 +47,7 @@
             ;; Task locations
             (image_at wp5)
             (scan_at wp3)
-            (sample_location wp1)
+
             ;; All mission tasks completed
             (image_collected l1)
             (scan_collected l1)

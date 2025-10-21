@@ -66,6 +66,9 @@
         (available wp4)
         (available wp5)
         (available wp6)
+        ;;Physical location defined
+        (sample_location wp5)
+        (sample_location wp1)
     )
 
     (:goal
@@ -79,8 +82,6 @@
             (scan_at wp4)
             (image_at wp2)
             (scan_at wp6)
-            (sample_location wp5)
-            (sample_location wp1)
             ;;Collected at
             (image_collected l1)
             (scan_collected l1)

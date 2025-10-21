@@ -72,10 +72,10 @@
     (:action take_sample
         :parameters (?r - rover ?wp - waypoint ?h - human ?l - lander ?droom - docking_bay)
         :precondition (and 
-            (rover_pos ?r ?wp) (not(physical_sample ?r))
+            (rover_pos ?r ?wp) (not(physical_sample ?r))(sample_location ?wp)
             (human_pos ?h ?droom)(human_lander ?h ?l)(lander_rover ?l ?r)(room_lander ?droom ?l)
         )
-        :effect (and (physical_sample ?r)(sample_location ?wp))
+        :effect (and (physical_sample ?r)(not(sample_location ?wp)))
     )
 
     (:action store_sample
@@ -90,8 +90,7 @@
 
     (:action transmit_image
         :parameters (?r - rover ?wp - waypoint ?l - lander ?h - human ?croom - c_room)
-        :precondition (and 
-            (rover_pos ?r ?wp)(image_stored ?r) (lander_pos ?l ?wp) (deployed_l ?l) 
+        :precondition (and (image_stored ?r) (lander_pos ?l ?wp) (deployed_l ?l) 
             (lander_rover ?l ?r)(human_pos ?h ?croom)(human_lander ?h ?l)(room_lander ?croom ?l)
         )
         :effect (and (image_collected ?l) (not (image_stored ?r)))
@@ -99,8 +98,7 @@
 
     (:action transmit_scan
         :parameters (?r - rover ?wp - waypoint ?l - lander ?h - human ?croom - c_room)
-        :precondition (and 
-            (rover_pos ?r ?wp) 
+        :precondition (and
             (scan_stored ?r) (lander_pos ?l ?wp) (deployed_l ?l) 
             (lander_rover ?l ?r)(human_pos ?h ?croom)(human_lander ?h ?l)(room_lander ?croom ?l)
         )

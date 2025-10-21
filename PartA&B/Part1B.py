@@ -1,7 +1,6 @@
 #Coursework 1 - Corey Yule, Euan Grierson 
 #Part 1A
 
-#Reference: https://www.geeksforgeeks.org/dsa/sudoku-backtracking-7/ <- this is for our report.
 
 #Imports
 import csv
@@ -38,16 +37,16 @@ class SudokuCSP:
     #Checks constraints -> 3x3 no dups, rows no dupes, no dupes
     @staticmethod #So it can be called from the GUI
     def rule_check(row, col, val, grid):
-        # Check Row
+        # Checks Rows for duplicates 
         for c in range(9):
             if c != col and grid[row][c] == val:
                 return False
-        # Check Column
+        # Check Column for duplicates
         for r in range(9):
             if r != row and grid[r][col] == val:
                 return False
 
-        #Check 3x3
+        #Check 3x3 to ensure no duplicates
         box_row = (row // 3)*3
         box_col = (col // 3)*3
 
@@ -160,13 +159,15 @@ class SudokuGui:
         # Skip filled cells
         if grid[row][col] != 0:
             return self.solve_puzzle(grid, row, col + 1)
-        # Try numbers 1–9
+        # Try numbers 1–9 insert
         for num in range(1, 10):
             if SudokuCSP.rule_check(row, col, num, grid):
+                #Place number
                 grid[row][col] = num
+                #Recursive call
                 if self.solve_puzzle(grid, row, col + 1):
                     return True
-                #Backtrack
+                #Backtrack if not valid
                 grid[row][col] = 0
                 self.counter += 1 #increment backtracks this is for the count
         return False
@@ -195,10 +196,11 @@ grid = [[0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0]]
-
+#calls the sudoku board
 sudoku = SudokuCSP(grid, {})   
 # create the board
 root = tk.Tk()
+#calls the gui and takes in the frame and the grid
 gui = SudokuGui(root, grid)
 root.mainloop()
 
